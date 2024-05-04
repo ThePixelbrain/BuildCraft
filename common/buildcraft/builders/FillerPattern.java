@@ -112,6 +112,7 @@ public abstract class FillerPattern implements IFillerPattern {
 
 		if (lastX != Integer.MAX_VALUE) {
 			if (BuildCraftBuilders.fillerDestroy) {
+				// TODO: Replace with player break
 				world.setBlockWithNotify(lastX, lastY, lastZ, 0);
 			} else {
 				BlockUtil.breakBlock(world, lastX, lastY, lastZ, 20);

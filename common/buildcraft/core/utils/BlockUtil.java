@@ -10,6 +10,7 @@ package buildcraft.core.utils;
 
 import java.util.List;
 
+import buildcraft.core.proxy.CoreProxy;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -36,9 +37,10 @@ public class BlockUtil {
 	}
     public static void breakBlock(World world, int x, int y, int z, int forcedLifespan) {
 		int blockId = world.getBlockId(x, y, z);
+		Block block = Block.blocksList[blockId];
 
 		if (blockId != 0 && BuildCraftCore.dropBrokenBlocks && !world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-			List<ItemStack> items = Block.blocksList[blockId].getBlockDropped(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
+			List<ItemStack> items = block.getBlockDropped(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
 
 			for (ItemStack item : items) {
 				float var = 0.7F;
@@ -54,7 +56,7 @@ public class BlockUtil {
 			}
 		}
 
-		world.setBlockWithNotify(x, y, z, 0);
+		block.removeBlockByPlayer(world, CoreProxy.proxy.getBuildCraftPlayer(world), x, y, z);
 	}
 
 	public static boolean canChangeBlock(World world, int x, int y, int z) {

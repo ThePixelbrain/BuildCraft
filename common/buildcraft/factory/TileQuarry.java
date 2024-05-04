@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -407,7 +408,10 @@ public class TileQuarry extends TileMachine implements IMachine, IPowerReceptor,
 			}
 
 			worldObj.playAuxSFXAtEntity(null, 2001, i, j, k, blockId + (worldObj.getBlockMetadata(i, j, k) << 12));
-			worldObj.setBlockWithNotify(i, j, k, 0);
+			Block block = Block.blocksList[worldObj.getBlockId(i, j, k)];
+			if (block != null) {
+				block.removeBlockByPlayer(worldObj, CoreProxy.proxy.getBuildCraftPlayer(worldObj), i, j, k);
+			}
 		}
 
 		// Collect any lost items laying around
